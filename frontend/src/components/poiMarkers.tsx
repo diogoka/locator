@@ -1,31 +1,23 @@
-import { AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
-import React from 'react';
-import { Poi } from '@/types/types';
+import { Poi, DirectionsType } from '@/types/types';
+import PoiMarkerItem from './poiMarkerItem';
+import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
     pois: Poi[];
+    setDirections: Dispatch<SetStateAction<DirectionsType>>;
+    setHasDirection: (status: boolean) => void;
 };
 
-const PoiMarkers = ({ pois }: Props) => {
-    console.log('props', pois);
-
+const PoiMarkers = ({ pois, setDirections, setHasDirection }: Props) => {
     return (
         <>
             {pois.map((poi: Poi) => (
-                <AdvancedMarker
+                <PoiMarkerItem
+                    poi={poi}
                     key={poi.key}
-                    position={poi.location}
-                    clickable={true}
-                    onClick={() => {
-                        console.log('marker click');
-                    }}
-                >
-                    <Pin
-                        background={'#FBBC04'}
-                        glyphColor={'#000'}
-                        borderColor={'#000'}
-                    />
-                </AdvancedMarker>
+                    setDirections={setDirections}
+                    setHasDirection={setHasDirection}
+                />
             ))}
         </>
     );

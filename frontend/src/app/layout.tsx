@@ -55,8 +55,6 @@ const rokkitt = localFont({
     ],
 });
 
-const inter = Inter({ subsets: ['latin'] });
-
 export const metadata: Metadata = {
     title: 'Locator App',
     description: 'App to localize drinking fountains.',
