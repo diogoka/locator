@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd --env-file=.env server.ts"
+    "dev": "tsnd --env-file=.env server.ts",
+    "seed": "tsnd seed/seed.ts"
   },
   "author": "diogo",
   "license": "ISC",

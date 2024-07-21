@@ -1,10 +1,5 @@
 import { Model, model, Schema } from 'mongoose';
-
-type PoiType = {
-    name: string;
-    latitude: number;
-    longitude: number;
-};
+import { PoiType } from '../types/types';
 
 type PoiModel = Model<PoiType>;
 
@@ -13,6 +8,10 @@ const poiSchema = new Schema<PoiType, PoiModel>(
         name: {
             type: String,
             required: true,
+        },
+        location: {
+            type: String || null,
+            required: false,
         },
         latitude: {
             type: Number,

@@ -15,9 +15,10 @@ export const getAllPois = async (
 
 export const newPoi = async (req: express.Request, res: express.Response) => {
     try {
-        const { name, latitude, longitude } = req.body;
+        const { name, location, latitude, longitude } = req.body;
         const newPoi = await Poi.create({
             name: name,
+            location: location,
             latitude: +latitude,
             longitude: +longitude,
         });
@@ -40,6 +41,23 @@ export const deletePoi = async (
             const deleted = await Poi.findByIdAndDelete(req.params.id);
             res.status(200).json(deleted);
         }
+    } catch (e) {
+        res.status(500).json(`Server Error: ${e}`);
+    }
+};
+
+export const updatePoi = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    try {
+        const { newName, newLocation, id } = req.body;
+
+        const updatedPoi = await Poi.findByIdAndUpdate(id, {
+            name: newName,
+            location: newLocation,
+        });
+        res.status(200).json(updatedPoi);
     } catch (e) {
         res.status(500).json(`Server Error: ${e}`);
     }
