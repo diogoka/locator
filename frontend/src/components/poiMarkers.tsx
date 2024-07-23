@@ -11,14 +11,15 @@ type Props = {
 const PoiMarkers = ({ pois, setDirections, setHasDirection }: Props) => {
     return (
         <>
-            {pois.map((poi: Poi) => (
-                <PoiMarkerItem
-                    poi={poi}
-                    key={poi.key}
-                    setDirections={setDirections}
-                    setHasDirection={setHasDirection}
-                />
-            ))}
+            {pois &&
+                pois.map((poi: Poi) => (
+                    <PoiMarkerItem
+                        poi={poi}
+                        key={poi._id}
+                        setDirections={setDirections}
+                        setHasDirection={setHasDirection}
+                    />
+                ))}
         </>
     );
 };

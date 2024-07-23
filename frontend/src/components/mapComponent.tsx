@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
     Map,
     MapMouseEvent,
-    Marker,
     AdvancedMarker,
     useMap,
-    useMapsLibrary,
 } from '@vis.gl/react-google-maps';
 import { LocationType, Poi, DirectionsType } from '@/types/types';
 import PoiMarkers from './poiMarkers';
-import { locations } from '@/locations/poi';
 import ModalNewPoi from './modalNewPoi';
 import Directions from './direction';
 
@@ -20,6 +17,7 @@ type Props = {
 const MapComponent = ({ currentPosition }: Props) => {
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [tempPoi, setTempPoi] = useState<Poi>();
+    const [markers, setMarkers] = useState<Poi[]>();
 
     const [hasDirection, setHasDirection] = useState<boolean>(false);
     const [directions, setDirections] = useState<DirectionsType>({
@@ -29,16 +27,17 @@ const MapComponent = ({ currentPosition }: Props) => {
         },
     });
 
-    const [isDirectionModalOpen, setIsDirectionModalOpen] =
-        useState<boolean>(false);
     const map = useMap();
 
-    const [tempMarkers, setTempMarkers] = useState<Poi[]>([
-        {
-            key: 'steamClock',
-            location: { lat: 49.284416, lng: -123.108978 },
-        },
-    ]);
+    const getPois = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}`);
+        const pois = await res.json();
+        setMarkers(pois);
+    };
+
+    useEffect(() => {
+        getPois();
+    }, []);
 
     useEffect(() => {
         map?.panTo({
@@ -49,8 +48,10 @@ const MapComponent = ({ currentPosition }: Props) => {
 
     const addNewTempPoi = (location: LocationType) => {
         setTempPoi({
-            key: '',
-            location: {
+            _id: '',
+            name: '',
+            location: '',
+            latLng: {
                 lat: location.latitude,
                 lng: location.longitude,
             },
@@ -63,15 +64,32 @@ const MapComponent = ({ currentPosition }: Props) => {
         setModalOpen(false);
     };
 
-    const addNewPoiFn = (key: string) => {
+    const addNewPoiFn = async (name: string, location: string) => {
         const newPoint: Poi = {
-            key: key,
-            location: {
-                lat: tempPoi?.location.lat || 0,
-                lng: tempPoi?.location.lng || 0,
+            _id: '',
+            name: name,
+            location: location,
+            latLng: {
+                lat: tempPoi?.latLng.lat || 0,
+                lng: tempPoi?.latLng.lng || 0,
             },
         };
-        setTempMarkers((prev) => [...prev, newPoint]);
+
+        const newPoi = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: newPoint.name,
+                location: newPoint.location,
+                latitude: newPoint.latLng.lat,
+                longitude: newPoint.latLng.lng,
+            }),
+        });
+
+        const poi = await newPoi.json();
+        setMarkers((prev) => [...prev!, poi.newPoi]);
         setModalOpen(false);
     };
 
@@ -88,7 +106,6 @@ const MapComponent = ({ currentPosition }: Props) => {
                     disableDefaultUI={true}
                     gestureHandling={'greedy'}
                     onClick={(event: MapMouseEvent) => {
-                        console.log('event', event);
                         addNewTempPoi({
                             latitude: event.detail.latLng?.lat!,
                             longitude: event.detail.latLng?.lng!,
@@ -98,7 +115,7 @@ const MapComponent = ({ currentPosition }: Props) => {
                     mapTypeId={'terrain'}
                 >
                     <PoiMarkers
-                        pois={tempMarkers}
+                        pois={markers!}
                         setDirections={setDirections}
                         setHasDirection={setHasDirection}
                     />

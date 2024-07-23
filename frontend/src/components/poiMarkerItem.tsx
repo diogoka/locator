@@ -17,8 +17,8 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
         setDirections((prevState) => ({
             ...prevState,
             destination: {
-                lat: poi.location.lat,
-                lng: poi.location.lng,
+                lat: poi.latitude!,
+                lng: poi.longitude!,
             },
         }));
         setIsModalOpen(false);
@@ -26,11 +26,10 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
     return (
         <>
             <AdvancedMarker
-                key={poi.key}
-                position={poi.location}
+                key={poi._id}
+                position={{ lat: poi.latitude!, lng: poi.longitude! }}
                 clickable={true}
                 onClick={(e: any) => {
-                    console.log('marker click', e.pixel);
                     setIsModalOpen(true);
                 }}
             >
@@ -40,7 +39,12 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
                     borderColor={'#000'}
                 />
             </AdvancedMarker>
-            <ModalPoi isOpen={isModalOpen} navigate={navigate} />
+            <ModalPoi
+                isOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                navigate={navigate}
+                poi={poi}
+            />
         </>
     );
 };

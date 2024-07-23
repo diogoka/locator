@@ -4,8 +4,12 @@ export type LocationType = {
 };
 
 export type Poi = {
-    key: string;
-    location: google.maps.LatLngLiteral;
+    _id: string;
+    name: string;
+    location: string;
+    latLng: google.maps.LatLngLiteral;
+    latitude?: number;
+    longitude?: number;
 };
 
 export type DirectionsType = {
