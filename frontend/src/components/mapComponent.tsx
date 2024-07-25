@@ -37,6 +37,8 @@ const MapComponent = ({ currentPosition }: Props) => {
 
     useEffect(() => {
         getPois();
+        map?.setMapTypeId(process.env.NEXT_PUBLIC_MAP_ID!);
+        console.log('id', map?.getMapTypeId());
     }, []);
 
     useEffect(() => {
@@ -112,7 +114,6 @@ const MapComponent = ({ currentPosition }: Props) => {
                         });
                     }}
                     mapId={process.env.NEXT_PUBLIC_MAP_ID}
-                    mapTypeId={'terrain'}
                 >
                     <PoiMarkers
                         pois={markers!}

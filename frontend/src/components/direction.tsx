@@ -9,6 +9,7 @@ type Props = {
 };
 
 const Directions = ({ map, directions }: Props) => {
+    console.log('faga', map.getMapTypeId());
     const currentOrigin = useLocationStore((state) => state.location);
     const routesLibrary = useMapsLibrary('routes');
     const [directionService, setDirectionService] =
@@ -26,7 +27,13 @@ const Directions = ({ map, directions }: Props) => {
     useEffect(() => {
         if (!routesLibrary || !map || !directions.destination) return;
         setDirectionService(new routesLibrary.DirectionsService());
-        setDirectionRenderer(new routesLibrary.DirectionsRenderer({ map }));
+        setDirectionRenderer(
+            new routesLibrary.DirectionsRenderer({
+                map,
+                suppressMarkers: true,
+                suppressInfoWindows: true,
+            })
+        );
     }, [routesLibrary, map]);
 
     useEffect(() => {
@@ -55,7 +62,12 @@ const Directions = ({ map, directions }: Props) => {
                 directionRenderer.setDirections(res);
                 setRoutes(res.routes);
             });
-    }, [directionService, directionRenderer]);
+    }, [directionService, directionRenderer, directions]);
+
+    useEffect(() => {
+        if (!directionRenderer) return;
+        directionRenderer.setRouteIndex(routeIndex);
+    }, [routeIndex, directionRenderer]);
 
     if (!leg) return null;
 
@@ -69,6 +81,16 @@ const Directions = ({ map, directions }: Props) => {
             </p>
             <h4>Distance: {leg.distance?.text}</h4>
             <h4>Duration: {leg.duration?.text}</h4>
+            <h2>Other Routes</h2>
+            <ul>
+                {routes.map((route, index) => (
+                    <li key={route.summary}>
+                        <button onClick={() => setRouteIndex(index)}>
+                            {route.summary}
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
