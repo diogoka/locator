@@ -53,10 +53,14 @@ export const updatePoi = async (
     try {
         const { newName, newLocation, id } = req.body;
 
-        const updatedPoi = await Poi.findByIdAndUpdate(id, {
-            name: newName,
-            location: newLocation,
-        });
+        const updatedPoi = await Poi.findByIdAndUpdate(
+            id,
+            {
+                name: newName,
+                location: newLocation,
+            },
+            { new: true }
+        );
         res.status(200).json(updatedPoi);
     } catch (e) {
         res.status(500).json(`Server Error: ${e}`);

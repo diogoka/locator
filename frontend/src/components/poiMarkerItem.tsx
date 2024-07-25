@@ -11,6 +11,29 @@ type Props = {
 
 const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [actualPoi, setActualPoi] = useState<Poi>(poi);
+
+    const updatePoi = async (name: string, location: string, id: string) => {
+        const updatingPoi = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id,
+                    newName: name,
+                    newLocation: location,
+                }),
+            }
+        );
+
+        const updatedPoi = await updatingPoi.json();
+        setActualPoi(updatedPoi);
+
+        console.log(updatedPoi);
+    };
 
     const navigate = () => {
         setHasDirection(true);
@@ -43,7 +66,8 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
                 isOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 navigate={navigate}
-                poi={poi}
+                poi={actualPoi}
+                updatePoi={updatePoi}
             />
         </>
     );
