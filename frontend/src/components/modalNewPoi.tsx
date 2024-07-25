@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 type Props = {
     isOpen: boolean;
@@ -11,39 +13,49 @@ const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
     const [location, setLocation] = useState<string>();
 
     return (
-        <dialog open={isOpen} className='z-40 fixed inset-0 p-10 rounded-md'>
-            <p className='mb-5'>Add a new drinking fountain</p>
+        <dialog
+            open={isOpen}
+            className='z-40 fixed inset-0 p-10 rounded-md shadow-lg'
+        >
+            <p className='mb-5 text-center font-bold text-lg'>
+                New drinking fountain
+            </p>
             <div className='flex justify-between flex-col opacity-100'>
-                <p>Add a name for this location: E.g.: plaza, park, etc</p>
-                <input
+                <p>Add a name for this location: </p>
+                <p className='text-red-600 text-sm'>E.g.: plaza, park, etc</p>
+                <Input
                     type='text'
-                    className='input bg-slate-50 rounded-md text-black'
+                    className='input bg-slate-50 rounded-md text-black max-w-[200px] mb-3'
                     onChange={(e) => {
                         setName(e.target.value);
                     }}
                 />
-                <p>Add the location: E.g.: near black door, in front of, etc</p>
-                <input
+                <p>Add the location: </p>
+                <p className='text-red-600 text-sm'>
+                    E.g.: near of, in front of, etc
+                </p>
+                <Input
                     type='text'
-                    className='input bg-slate-50 rounded-md text-black'
+                    className='input bg-slate-50 rounded-md text-black max-w-[200px] mb-5'
                     onChange={(e) => {
                         setLocation(e.target.value);
                     }}
                 />
 
-                <div>
-                    <button
+                <div className='flex items-center justify-evenly'>
+                    <Button
                         onClick={() => newPoi(name!, location!)}
-                        className='btn btn-success min-w-[75px]'
+                        className='min-w-[75px]'
                     >
                         Add
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={closeModal}
-                        className='btn btn-error min-w-[75px]'
+                        variant='outline'
+                        className='min-w-[75px]'
                     >
                         Cancel
-                    </button>
+                    </Button>
                 </div>
             </div>
         </dialog>
