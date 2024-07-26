@@ -69,9 +69,11 @@ export default function RootLayout({
     return (
         <html lang='en' data-theme='dark'>
             <body className={rokkitt.className}>
-                <Header />
-                {children}
-                <Footer />
+                <div className='w-full h-screen flex flex-col'>
+                    <Header />
+                    <div className='grow'>{children}</div>
+                    <Footer />
+                </div>
                 <Toaster />
             </body>
         </html>

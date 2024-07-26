@@ -95,9 +95,8 @@ const MapComponent = ({ currentPosition }: Props) => {
     };
 
     return (
-        <div className='w-screen h-80'>
+        <div className='w-full h-full'>
             <Map
-                // style={{ width: '100%', height: '100%' }}
                 defaultCenter={{
                     lat: currentPosition.latitude,
                     lng: currentPosition.longitude,

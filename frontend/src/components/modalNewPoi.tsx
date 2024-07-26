@@ -29,7 +29,7 @@ const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
     return (
         <dialog
             open={isOpen}
-            className='z-40 fixed inset-0 p-10 rounded-md shadow-lg'
+            className='z-40 fixed inset-0 p-10 rounded-md shadow-2xl'
         >
             <p className='mb-5 text-center font-bold text-lg'>
                 New drinking fountain
