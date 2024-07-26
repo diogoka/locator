@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import Header from '@/components/header';
+import Footer from '@/components/footer';
+import { Toaster } from '@/components/ui/toaster';
 
 import './globals.css';
 
@@ -70,6 +71,8 @@ export default function RootLayout({
             <body className={rokkitt.className}>
                 <Header />
                 {children}
+                <Footer />
+                <Toaster />
             </body>
         </html>
     );

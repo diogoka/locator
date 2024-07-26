@@ -38,7 +38,6 @@ const MapComponent = ({ currentPosition }: Props) => {
     useEffect(() => {
         getPois();
         map?.setMapTypeId(process.env.NEXT_PUBLIC_MAP_ID!);
-        console.log('id', map?.getMapTypeId());
     }, []);
 
     useEffect(() => {
@@ -96,49 +95,47 @@ const MapComponent = ({ currentPosition }: Props) => {
     };
 
     return (
-        <>
-            <div className='w-full'>
-                <Map
-                    style={{ width: '100%', height: '80vh' }}
-                    defaultCenter={{
+        <div className='w-screen h-80'>
+            <Map
+                // style={{ width: '100%', height: '100%' }}
+                defaultCenter={{
+                    lat: currentPosition.latitude,
+                    lng: currentPosition.longitude,
+                }}
+                defaultZoom={17}
+                disableDefaultUI={true}
+                gestureHandling={'greedy'}
+                onClick={(event: MapMouseEvent) => {
+                    addNewTempPoi({
+                        latitude: event.detail.latLng?.lat!,
+                        longitude: event.detail.latLng?.lng!,
+                    });
+                }}
+                mapId={process.env.NEXT_PUBLIC_MAP_ID}
+            >
+                <PoiMarkers
+                    pois={markers!}
+                    setDirections={setDirections}
+                    setHasDirection={setHasDirection}
+                />
+                <AdvancedMarker
+                    // This is HOME. Need to change the Pin
+                    position={{
                         lat: currentPosition.latitude,
                         lng: currentPosition.longitude,
                     }}
-                    defaultZoom={17}
-                    disableDefaultUI={true}
-                    gestureHandling={'greedy'}
-                    onClick={(event: MapMouseEvent) => {
-                        addNewTempPoi({
-                            latitude: event.detail.latLng?.lat!,
-                            longitude: event.detail.latLng?.lng!,
-                        });
-                    }}
-                    mapId={process.env.NEXT_PUBLIC_MAP_ID}
-                >
-                    <PoiMarkers
-                        pois={markers!}
-                        setDirections={setDirections}
-                        setHasDirection={setHasDirection}
-                    />
-                    <AdvancedMarker
-                        // This is HOME. Need to change the Pin
-                        position={{
-                            lat: currentPosition.latitude,
-                            lng: currentPosition.longitude,
-                        }}
-                        clickable={true}
-                    />
-                    {hasDirection && (
-                        <Directions map={map!} directions={directions} />
-                    )}
-                </Map>
-                <ModalNewPoi
-                    isOpen={isModalOpen}
-                    closeModal={closeModal}
-                    newPoi={addNewPoiFn}
+                    clickable={true}
                 />
-            </div>
-        </>
+                {hasDirection && (
+                    <Directions map={map!} directions={directions} />
+                )}
+            </Map>
+            <ModalNewPoi
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+                newPoi={addNewPoiFn}
+            />
+        </div>
     );
 };
 

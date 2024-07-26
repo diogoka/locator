@@ -4,6 +4,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 type Props = {
     poi: Poi;
@@ -21,9 +22,9 @@ const ModalPoi = ({
     updatePoi,
 }: Props) => {
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
-
     const [name, setName] = useState<string>('');
     const [location, setLocation] = useState<string>('');
+    const { toast } = useToast();
 
     useEffect(() => {}, [poi, isOpen]);
 
@@ -33,6 +34,14 @@ const ModalPoi = ({
     };
 
     const updatingPoiFn = () => {
+        if (!name || !location) {
+            toast({
+                variant: 'destructive',
+                title: 'Missing information',
+                description: 'Please add a valid name and location.',
+            });
+            return null;
+        }
         updatePoi(name, location, poi._id);
         setIsUpdating(false);
     };

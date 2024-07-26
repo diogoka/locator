@@ -9,7 +9,6 @@ type Props = {
 };
 
 const Directions = ({ map, directions }: Props) => {
-    console.log('faga', map.getMapTypeId());
     const currentOrigin = useLocationStore((state) => state.location);
     const routesLibrary = useMapsLibrary('routes');
     const [directionService, setDirectionService] =

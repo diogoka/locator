@@ -1,48 +1,35 @@
 import React from 'react';
-import Image from 'next/image';
-import Avatar from '../../public/avatar.png';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
     return (
-        <div className='navbar bg-base-100'>
-            <div className='flex-1'>
-                <a className='btn btn-ghost text-xl'>
-                    Drinking Fountain Locator
-                </a>
+        <div className='flex py-4 px-7 bg-tempColor/20 justify-between sticky'>
+            <div className='flex justify-center items-center'>
+                <a className='text-xl text-center'>Drinking Fountain Locator</a>
             </div>
-            <div className='flex-none gap-2'>
-                <div className='dropdown dropdown-end'>
-                    <div
-                        tabIndex={0}
-                        role='button'
-                        className='btn btn-ghost btn-circle avatar'
-                    >
-                        <div className='w-10 rounded-full'>
-                            <Image
-                                alt='Avatar'
-                                src={Avatar}
-                                width={500}
-                                height={500}
-                            />
-                        </div>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className='menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow'
-                    >
-                        <li>
-                            <a className='justify-between'>Profile</a>
-                        </li>
-                        <li>
-                            <a>Settings</a>
-                        </li>
-                        <li>
-                            <a>Logout</a>
-                        </li>
-                    </ul>
-                </div>
+            <div className='flex justify-center items-center'>
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        {' '}
+                        <Avatar>
+                            <AvatarImage src='https://github.com/shadcn.png' />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </div>
     );

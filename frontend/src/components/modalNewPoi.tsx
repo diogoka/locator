@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 type Props = {
     isOpen: boolean;
@@ -11,6 +12,19 @@ type Props = {
 const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
     const [name, setName] = useState<string>();
     const [location, setLocation] = useState<string>();
+    const { toast } = useToast();
+
+    const newPoiFn = () => {
+        if (!name || !location) {
+            toast({
+                variant: 'destructive',
+                title: 'Missing information',
+                description: 'Please add a valid name and location.',
+            });
+            return null;
+        }
+        newPoi(name, location);
+    };
 
     return (
         <dialog
@@ -25,6 +39,7 @@ const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
                 <p className='text-red-600 text-sm'>E.g.: plaza, park, etc</p>
                 <Input
                     type='text'
+                    required
                     className='input bg-slate-50 rounded-md text-black max-w-[200px] mb-3'
                     onChange={(e) => {
                         setName(e.target.value);
@@ -36,6 +51,7 @@ const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
                 </p>
                 <Input
                     type='text'
+                    required
                     className='input bg-slate-50 rounded-md text-black max-w-[200px] mb-5'
                     onChange={(e) => {
                         setLocation(e.target.value);
@@ -43,10 +59,7 @@ const ModalNewPoi = ({ isOpen, closeModal, newPoi }: Props) => {
                 />
 
                 <div className='flex items-center justify-evenly'>
-                    <Button
-                        onClick={() => newPoi(name!, location!)}
-                        className='min-w-[75px]'
-                    >
+                    <Button onClick={() => newPoiFn()} className='min-w-[75px]'>
                         Add
                     </Button>
                     <Button
