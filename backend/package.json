@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsnd --env-file=.env server.ts",
-    "seed": "tsnd seed/seed.ts"
+    "start": "ts-node server.ts"
   },
   "author": "diogo",
   "license": "ISC",

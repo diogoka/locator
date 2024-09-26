@@ -1,10 +1,7 @@
 import express from 'express';
 import { Poi } from '../models/poi.model';
 
-export const getAllPois = async (
-    req: express.Request,
-    res: express.Response
-) => {
+export const getAllPois = async (_: express.Request, res: express.Response) => {
     try {
         const allPois = await Poi.find();
         res.status(200).json(allPois);

@@ -5,6 +5,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { TbFountainFilled } from 'react-icons/tb';
 
 type Props = {
     poi: Poi;
@@ -53,7 +54,22 @@ const ModalPoi = ({
         >
             <div className='flex flex-col w-full h-full justify-center items-center'>
                 <Card className='bg-white p-6 rounded-md relative shadow-2xl'>
-                    <CardTitle>{poi.name}</CardTitle>
+                    <div className='flex items-center'>
+                        <TbFountainFilled
+                            size={20}
+                            style={{
+                                textAlign: 'center',
+                            }}
+                        />
+                        <CardTitle
+                            style={{
+                                textAlign: 'center',
+                                marginLeft: '5px',
+                            }}
+                        >
+                            {poi.name}
+                        </CardTitle>
+                    </div>
                     <Button
                         className='bg-red-600 rounded-sm p-1 absolute top-3 right-3 w-5 h-5 flex justify-center items-center'
                         onClick={() => closeModal()}

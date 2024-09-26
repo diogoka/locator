@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import { DirectionsType, Poi } from '@/types/types';
 import ModalPoi from './modalPoi';
+import { TbFountainFilled } from 'react-icons/tb';
 
 type Props = {
     poi: Poi;
@@ -31,8 +32,6 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
 
         const updatedPoi = await updatingPoi.json();
         setActualPoi(updatedPoi);
-
-        console.log(updatedPoi);
     };
 
     const navigate = () => {
@@ -52,15 +51,11 @@ const PoiMarkerItem = ({ poi, setDirections, setHasDirection }: Props) => {
                 key={poi._id}
                 position={{ lat: poi.latitude!, lng: poi.longitude! }}
                 clickable={true}
-                onClick={(e: any) => {
+                onClick={() => {
                     setIsModalOpen(true);
                 }}
             >
-                <Pin
-                    background={'#FBBC04'}
-                    glyphColor={'#000'}
-                    borderColor={'#000'}
-                />
+                <TbFountainFilled size={30} />
             </AdvancedMarker>
             <ModalPoi
                 isOpen={isModalOpen}

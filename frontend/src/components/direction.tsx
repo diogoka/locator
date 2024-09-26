@@ -2,6 +2,8 @@ import { DirectionsType } from '@/types/types';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import React, { useEffect, useState } from 'react';
 import { useLocationStore } from '@/store/locationStore';
+import { Card, CardTitle, CardHeader } from '@/components/ui/card';
+import { VscTriangleRight } from 'react-icons/vsc';
 
 type Props = {
     map: google.maps.Map;
@@ -71,26 +73,62 @@ const Directions = ({ map, directions }: Props) => {
     if (!leg) return null;
 
     return (
-        <div className='directions z-50'>
-            <h2>{selected.summary}</h2>
-            <p>
-                from {''}
+        <Card className='absolute top-0 right-0 p-4 rounded-lg mr-5 mt-5 shadow-2xl'>
+            <CardHeader className='p-0'>
+                <CardTitle className='text-lg font-bold'>
+                    Selected Route:{' '}
+                </CardTitle>
+                <h1 className='pl-2'>
+                    <strong>Route name: </strong>
+                    {selected.summary}
+                </h1>
+            </CardHeader>
+            <p className='pl-2'>
+                <strong>Directions: </strong>
+                {''}
                 {leg.start_address.split(',')[0]} to{' '}
                 {leg.end_address.split(',')[0]}
             </p>
-            <h4>Distance: {leg.distance?.text}</h4>
-            <h4>Duration: {leg.duration?.text}</h4>
-            <h2>Other Routes</h2>
-            <ul>
-                {routes.map((route, index) => (
-                    <li key={route.summary}>
-                        <button onClick={() => setRouteIndex(index)}>
-                            {route.summary}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+            <h4 className='pl-2'>
+                <strong>Distance: </strong> {leg.distance?.text}
+            </h4>
+            <h4 className='pl-2'>
+                <strong>Duration: </strong>
+                {leg.duration?.text}
+            </h4>
+
+            {routes.length > 1 && (
+                <>
+                    <h1 className='text-lg mt-3 font-bold'>Other Routes: </h1>
+                    <ul>
+                        {routes.map((route, index) => (
+                            <li
+                                key={route.summary}
+                                className='flex items-center'
+                            >
+                                {routeIndex === index ? (
+                                    <button
+                                        onClick={() => setRouteIndex(index)}
+                                        className='flex items-center mb-1 pl-2 bg-slate-600/20 rounded-sm pr-2'
+                                    >
+                                        <VscTriangleRight />
+                                        {route.summary}
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => setRouteIndex(index)}
+                                        className='flex items-center mb-1 pl-2h'
+                                    >
+                                        <VscTriangleRight />
+                                        {route.summary}
+                                    </button>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </Card>
     );
 };
 

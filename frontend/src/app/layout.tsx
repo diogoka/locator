@@ -67,7 +67,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='en' data-theme='dark'>
+        <html lang='en'>
             <body className={rokkitt.className}>
                 <div className='w-full h-screen flex flex-col'>
                     <Header />
